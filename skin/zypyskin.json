@@ -1,0 +1,15 @@
+{ "SkinData" : {
+"BackgroundImage" : "pkg:/images/epg_bg_4.png",
+"ChannelNameColor" : "#FFFFFF",
+"ChannelDescriptionColor" : "#b5b5b7",
+"ProgramNameColor" : "#b5b5b7",
+"TimelineTextColor" : "#FFFFFF",
+"EPGBackgroundColor" : "#311b92",
+"ChannelSectionBackgroudColor" : "#230c5f",
+"ChannelSectionTextColor" : "#FFFFFF",
+"ChannelBackgroundColor" : "#151515",
+"ChannelProgramDefaultColor" : "#323232",
+"ChannelProgramColor" : "#4f198c",
+"ChannelSelectedProgramColor" : "#752b9f",
+"ChannelTextColor" : "#FFFFFF"
+}}
