@@ -52,6 +52,7 @@ function http_EPG(o)
                                 CHANNEL.chImg = item["channel"]["channelStrip"]
                                 CHANNEL.chPlayList = []
                                 CHANNEL.chAdds = []
+                                CHANNEL.streamURL = item["channel"]["streamUrl"]
                                 
                                 inc = 0
                                 prgnum = 0

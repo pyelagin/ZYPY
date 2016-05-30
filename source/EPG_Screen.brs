@@ -74,81 +74,60 @@ function EPG_Screen(o)
                                 DSP_Channels(o)
                             else if(o.EPG_OBJ.LAST_CHANNEL.chPlayList <> invalid) 
                                 o.UILEVEL = 0
-                                
                                 DSP_Channels(o)
                             end if
-                       
                         else if(o.UILEVEL = 1)
-                        
-                            'if(o.EPG_OBJ.FAVORITE_CHANNELS_INDEX > 0)
-                                'o.EPG_OBJ.FAVORITE_CHANNELS_INDEX = o.EPG_OBJ.FAVORITE_CHANNELS_INDEX - 1
-                                'FavoriteChannels(o)
-                            'else 
                                 if(o.EPG_OBJ.LAST_CHANNEL.chPlayList <> invalid)
                                     o.UILEVEL = 0
                                     rollOverChannel_last(o, port)
                                     DSP_Channels(o)
-                                end if
-                            'end if  
-                            
+                                end if    
                         else if(o.UILEVEL = 0)
                             rollOverChannel_last(o, port)
                             DSP_Channels(o) 
                         end if
                     else if(o.EPG_OBJ.PLAYER_MOD = "max")
-                        
                         if(o.UILEVEL = 2)
                             if(o.CANNELS_INDEX > 0)
                                 if(o.EPG_OBJ.CHANNEL_INDEX > 0)
                                     o.EPG_OBJ.CHANNEL_INDEX = o.EPG_OBJ.CHANNEL_INDEX - 1
                                     o.CANNELS_INDEX = o.CANNELS_INDEX - 1
-                                    'DSP_Channels(o)
+                                    rollOverChannel(o, port)
+                                     'EPG_DSP_currentChannel(o)
+                                     'DSP_Channels(o)
                                 else
                                     Y_scrooll(o, "up")
                                     o.CANNELS_INDEX = o.CANNELS_INDEX - 1
+                                    rollOverChannel_last(o, port)
                                 end if
-                                selectChannel(o, port)
-                            else if(o.EPG_OBJ.FAVORITE_CHANNELS.Count() > 0)
-                                o.UILEVEL = 1
-                                'FavoriteChannels(o) 
-                                'DSP_Channels(o)
-                                selectChannel_fav(o, port)
                             else if(o.EPG_OBJ.LAST_CHANNEL.chPlayList <> invalid) 
                                 o.UILEVEL = 0
                                 'DSP_Channels(o)
-                                 selectChannel_last(o, port)
+                                rollOverChannel_last(o, port)
                             end if
                        
                         else if(o.UILEVEL = 0)
-                            'DSP_Channels(o)
-                            selectChannel_last(o, port)
-                        end if
-                        
+                            rollOverChannel_last(o, port)
+                            'dDSP_Channels(o) 
+                        end if 
                     end if
                 else if(msg = 3)
                     if(o.EPG_OBJ.PLAYER_MOD = "min")
-                    
                         if(o.UILEVEL = 0)
-                        
                             if(o.EPG_OBJ.FAVORITE_CHANNELS.Count() > 0)
                                 o.UILEVEL = 1
                             else 
                                 o.UILEVEL = 2
                                 rollOverChannel(o, port)
-                            end if 
-                            
-                            DSP_Channels(o)
-                            
+                            end if
+                            DSP_Channels(o)    
                         else if(o.UILEVEL = 1)
-                        
                             if(o.EPG_OBJ.FAVORITE_CHANNELS.Count() > 0) 
                                 o.UILEVEL = 2
                                 rollOverChannel(o, port)
                                 DSP_Channels(o)    
-                            end if
-                            
+                            end if    
                         else if(o.UILEVEL = 2)
-                        
                             if(o.EPG_OBJ.CHANNEL_INDEX < o.EPG_OBJ.CHANNEL_LIMIT)
                                 o.EPG_OBJ.CHANNEL_INDEX = o.EPG_OBJ.CHANNEL_INDEX + 1
                                 o.CANNELS_INDEX = o.CANNELS_INDEX + 1
@@ -164,44 +143,32 @@ function EPG_Screen(o)
                                     DSP_Channels(o)
                                 end if
                             end if
-                            
-                           
                         end if
-                        
                     else if(o.EPG_OBJ.PLAYER_MOD = "max")
-                    
                         if(o.UILEVEL = 0)
-                        
                             if(o.EPG_OBJ.FAVORITE_CHANNELS.Count() > 0)
-                                o.UILEVEL = 1
-                            else 
                                 o.UILEVEL = 2
-                            end if 
-                            
-                            'DSP_Channels(o)
-                            selectChannel_last(o, port)
-                            
-                            
+                                rollOverChannel(o, port)
+                            end if
+                            'DSP_Channels(o)      
                         else if(o.UILEVEL = 2)
-                        
                             if(o.EPG_OBJ.CHANNEL_INDEX < o.EPG_OBJ.CHANNEL_LIMIT)
                                 o.EPG_OBJ.CHANNEL_INDEX = o.EPG_OBJ.CHANNEL_INDEX + 1
                                 o.CANNELS_INDEX = o.CANNELS_INDEX + 1
-                                
+                                rollOverChannel(o, port)
+                                'EPG_DSP_currentChannel(o)
                                 'DSP_Channels(o)
                             else
                                 if(o.CANNELS_INDEX < o.EPG_OBJ.channels.Count() - 1)
                                     Y_scrooll(o, "down")
                                     o.CANNELS_INDEX = o.CANNELS_INDEX + 1
+                                    rollOverChannel(o, port)
+                                    'EPG_DSP_currentChannel(o)
+                                    'DSP_Channels(o)
                                 end if
                             end if
-                            
-                            selectChannel(o, port)
-                           
                         end if
-                          
                     end if
-                    
                 else if(msg = 4)
                     if(o.EPG_OBJ.PLAYER_MOD = "min")
                         if(o.UILEVEL = 0)
@@ -315,6 +282,16 @@ function EPG_Screen(o)
                 o.EPG_OBJ.playhead.TargetRect.x = o.EPG_OBJ.PLAYHEAD_X
                 'print "X---> "; o.EPG_OBJ.playhead.TargetRect.x
                 if(o.EPG_OBJ.PLAYER_MOD = "min" and o.EPG_OBJ.playhead.TargetRect.x < 1211) o.canvas.SetLayer(31, o.EPG_OBJ.playhead)
+            else if(o.EPG_OBJ.PLAYER_MOD = "max" and o.EPG_OBJ.info = 1)
+                o.canvas.SetLayer(1001, { Color: "#ffffff", CompositionMode: "Source", TargetRect: {x:42+o.VIDEO_OBJ.PLAYHEAD_X, y:550+44 ,w:3,h:15}})
+                lb = {
+                    Text: gmdate(o.VIDEO_OBJ.CURRENT_PLAYTIME),
+                    TextAttrs:{Font:o.family_12,
+                        HAlign:"Left", VAlign:"Top",
+                        Direction:"LeftToRight"}
+                        TargetRect: {x:42+o.VIDEO_OBJ.PLAYHEAD_X+8, y:550+35, w:30, h:20}
+                 }
+                o.canvas.SetLayer(1003,  lb)
             end if
             timer.Mark()
             if(o.UILEVEL = 0)
@@ -360,7 +337,7 @@ function EPG_UI(o, port)
         
         o.EPG_OBJ.bg = {
                 url: o.SKIN.SkinData.BackgroundImage,
-                TargetRect: {x:0, y:0 ,w:1279,h:390}
+                TargetRect: {x:0, y:0 ,w:1280,h:292}
              }
              
         o.canvas.SetLayer(12, o.EPG_OBJ.bg)
@@ -381,10 +358,12 @@ function EPG_UI(o, port)
         
         DSP_Channels(o)
         
-        o.VIDEO_OBJ.x = 862
-        o.VIDEO_OBJ.y = 100
-        o.VIDEO_OBJ.w = 231
-        o.VIDEO_OBJ.h = 131
+        o.VIDEO_OBJ.x = 103
+        o.VIDEO_OBJ.y = 80
+        o.VIDEO_OBJ.w = 333
+        o.VIDEO_OBJ.h = 190
+        
+        '249 148
         'showBar(o, "hide")
         if(o.VideoPlayer <> invalid)
             targetrect = { x:o.VIDEO_OBJ.x, y:o.VIDEO_OBJ.y, w:o.VIDEO_OBJ.w, h:o.VIDEO_OBJ.h }
@@ -578,10 +557,15 @@ function rollOverChannel(o, port)
             if(o.EPG_OBJ.playhead.TargetRect.x >= o.EPG_OBJ.CURRENT_CHANNEL.xPos[i]-7 and o.EPG_OBJ.playhead.TargetRect.x <= o.EPG_OBJ.CURRENT_CHANNEL.xPos[i+1]-7)
                 print "TRIGERING VIDEO"
                 o.EPG_OBJ.pr_title.Text = o.EPG_OBJ.CURRENT_CHANNEL.chPlayList[i].videoTitle
-                o.canvas.SetLayer(17, o.EPG_OBJ.pr_title)
+                if(o.EPG_OBJ.PLAYER_MOD = "min") o.canvas.SetLayer(17, o.EPG_OBJ.pr_title)
                 if(o.EPG_OBJ.CURRENT_CHANNEL.chID <> o.CURRENT_CH_ID)
                     'o.EPG_OBJ.LAST_CHANNEL = TEMP_CHANNEL
-                    VideoPlayer(o, port,  o.EPG_OBJ.CURRENT_CHANNEL.chPlayList[i].videoURL)
+                    print "LIVE URL : "; o.EPG_OBJ.CURRENT_CHANNEL.streamURL
+                    if(o.EPG_OBJ.CURRENT_CHANNEL.streamURL = "")
+                        VideoPlayer(o, port,  o.EPG_OBJ.CURRENT_CHANNEL.chPlayList[i].videoURL)
+                    else
+                        VideoPlayer(o, port,  o.EPG_OBJ.CURRENT_CHANNEL.streamURL, "hls")
+                    end if
                     o.CURRENT_CH_ID = o.EPG_OBJ.CURRENT_CHANNEL.chID
                     o.VIDEO_OBJ.PLAYHEAD_X = 0
                     o.VIDEO_OBJ.CURRENT_PLAYTIME = 0
@@ -592,10 +576,15 @@ function rollOverChannel(o, port)
             print "TRIGERING VIDEO"
             e = o.EPG_OBJ.CURRENT_CHANNEL.chPlayList.Count()-1
             o.EPG_OBJ.pr_title.Text = o.EPG_OBJ.CURRENT_CHANNEL.chPlayList[e].videoTitle
-            o.canvas.SetLayer(17, o.EPG_OBJ.pr_title)
+            if(o.EPG_OBJ.PLAYER_MOD = "min") o.canvas.SetLayer(17, o.EPG_OBJ.pr_title)
             if(o.EPG_OBJ.CURRENT_CHANNEL.chID <> o.CURRENT_CH_ID)
                 'o.EPG_OBJ.LAST_CHANNEL = TEMP_CHANNEL
-                VideoPlayer(o, port,  o.EPG_OBJ.CURRENT_CHANNEL.chPlayList[e].videoURL)
+                print "LIVE URL : "; o.EPG_OBJ.CURRENT_CHANNEL.streamURL
+                if(o.EPG_OBJ.CURRENT_CHANNEL.streamURL = "")
+                    VideoPlayer(o, port,  o.EPG_OBJ.CURRENT_CHANNEL.chPlayList[e].videoURL)
+                else
+                    VideoPlayer(o, port,  o.EPG_OBJ.CURRENT_CHANNEL.streamURL, "hls")
+                end if
                 o.CURRENT_CH_ID = o.EPG_OBJ.CURRENT_CHANNEL.chID
                 o.VIDEO_OBJ.PLAYHEAD_X = 0
                 o.VIDEO_OBJ.CURRENT_PLAYTIME = 0
@@ -617,10 +606,15 @@ function rollOverChannel_last(o, port)
             if(o.EPG_OBJ.playhead.TargetRect.x >= o.EPG_OBJ.CURRENT_CHANNEL.xPos[i]-7 and o.EPG_OBJ.playhead.TargetRect.x <= o.EPG_OBJ.CURRENT_CHANNEL.xPos[i+1]-7)
                 print "TRIGERING VIDEO"
                 o.EPG_OBJ.pr_title.Text = o.EPG_OBJ.CURRENT_CHANNEL.chPlayList[i].videoTitle
-                o.canvas.SetLayer(17, o.EPG_OBJ.pr_title)
+                if(o.EPG_OBJ.PLAYER_MOD = "min") o.canvas.SetLayer(17, o.EPG_OBJ.pr_title)
                 if(o.EPG_OBJ.CURRENT_CHANNEL.chID <> o.CURRENT_CH_ID)
                     'o.EPG_OBJ.LAST_CHANNEL = TEMP_CHANNEL
-                    VideoPlayer(o, port,  o.EPG_OBJ.CURRENT_CHANNEL.chPlayList[i].videoURL)
+                    
+                    if(o.EPG_OBJ.CURRENT_CHANNEL.streamURL = "")
+                        VideoPlayer(o, port,  o.EPG_OBJ.CURRENT_CHANNEL.chPlayList[i].videoURL)
+                    else
+                        VideoPlayer(o, port,  o.EPG_OBJ.CURRENT_CHANNEL.streamURL, "hls")
+                    end if
                     o.CURRENT_CH_ID = o.EPG_OBJ.CURRENT_CHANNEL.chID
                     o.VIDEO_OBJ.PLAYHEAD_X = 0
                     o.VIDEO_OBJ.CURRENT_PLAYTIME = 0
@@ -631,10 +625,15 @@ function rollOverChannel_last(o, port)
             print "TRIGERING VIDEO"
             e = o.EPG_OBJ.CURRENT_CHANNEL.chPlayList.Count()-1
             o.EPG_OBJ.pr_title.Text = o.EPG_OBJ.CURRENT_CHANNEL.chPlayList[e].videoTitle
-            o.canvas.SetLayer(17, o.EPG_OBJ.pr_title)
+            if(o.EPG_OBJ.PLAYER_MOD = "min") o.canvas.SetLayer(17, o.EPG_OBJ.pr_title)
             if(o.EPG_OBJ.CURRENT_CHANNEL.chID <> o.CURRENT_CH_ID)
                 'o.EPG_OBJ.LAST_CHANNEL = TEMP_CHANNEL
-                VideoPlayer(o, port,  o.EPG_OBJ.CURRENT_CHANNEL.chPlayList[e].videoURL)
+         
+                if(o.EPG_OBJ.CURRENT_CHANNEL.streamURL = "")
+                    VideoPlayer(o, port,  o.EPG_OBJ.CURRENT_CHANNEL.chPlayList[e].videoURL)
+                else
+                    VideoPlayer(o, port,  o.EPG_OBJ.CURRENT_CHANNEL.streamURL, "hls")
+                end if
                 o.CURRENT_CH_ID = o.EPG_OBJ.CURRENT_CHANNEL.chID
                 o.VIDEO_OBJ.PLAYHEAD_X = 0
                 o.VIDEO_OBJ.CURRENT_PLAYTIME = 0
@@ -696,7 +695,13 @@ end function
 function selectChannel_fav_2(o, port)
 
     o.EPG_OBJ.CURRENT_CHANNEL = o.EPG_OBJ.FAVORITE_CHANNELS[o.EPG_OBJ.FAVORITE_CHANNELS_INDEX]
-    VideoPlayer(o, port,  o.EPG_OBJ.CURRENT_CHANNEL.chPlayList[0].videoURL)
+    
+    
+    if(o.EPG_OBJ.CURRENT_CHANNEL.streamURL <> "")
+        VideoPlayer(o, port,  o.EPG_OBJ.CURRENT_CHANNEL.chPlayList[0].videoURL)
+    else
+        VideoPlayer(o, port,  o.EPG_OBJ.CURRENT_CHANNEL.streamURL, "hls")
+    end if
     
     o.EPG_OBJ.PLAYER_MOD = "max"
     EPG_UI(o, port)
@@ -864,6 +869,8 @@ end function
 
 function showLoader(o,prm)
 
+    '249 148
+
     if(prm = 1)
          
          if(o.EPG_OBJ.PLAYER_MOD = "min")
@@ -872,7 +879,7 @@ function showLoader(o,prm)
              TextAttrs:{Font:"o.family_21",
                     HAlign:"Center", VAlign:"Center",
                     Direction:"LeftToRight"}
-                    TargetRect: {x:935, y:140, w:100, h:50}
+                    TargetRect: {x:220, y:150, w:100, h:50}
              }
          else
             x = (o.SCREEN_WIDTH / 2) - 20

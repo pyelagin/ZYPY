@@ -13,11 +13,11 @@ function EPG_DSP_timeLine(o)
     
     o.EPG_OBJ.time_lb = {
              Text: getClock(o)
-             TextAttrs:{Font:o.family_18,
-                    HAlign:"Center", VAlign:"Center",
+             TextAttrs:{Font:o.family_21,
+                    HAlign:"Right", VAlign:"Center",
                     Color: o.SKIN.SkinData.TimelineTextColor
                     Direction:"LeftToRight"}
-                    TargetRect: {x:70, y:302, w:100, h:20}
+                    TargetRect: {x:40, y:301, w:150, h:20}
              }
              
      o.canvas.SetLayer(19, o.EPG_OBJ.time_lb)

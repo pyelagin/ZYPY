@@ -1,5 +1,5 @@
 
-function VideoPlayer(o, port, url)
+function VideoPlayer(o, port, url, tp="mp4")
 
     print "VIDEO PLAYER RUNNING ";
     
@@ -7,7 +7,9 @@ function VideoPlayer(o, port, url)
     o.VideoPlayer.SetMaxVideoDecodeResolution(1280, 720)
     o.VideoPlayer.SetLoop(false)
     
-    streamformat = "MP4"
+    streamformat = tp
+    
+    print "STREAM TYPE ::::::: "; tp
     
     urlArr = url
     bitratesArr = [0]
@@ -125,11 +127,11 @@ function showInfo(o)
         
         ch_icon = {
             url: o.EPG_OBJ.CURRENT_CHANNEL.chThumb,
-            TargetRect: {x:30, y:575 ,w:103,h:100}
+            TargetRect: {x:30, y:620 ,w:60,h:60}
          }
         o.canvas.SetLayer(999,  ch_icon)
         
-        o.canvas.SetLayer(998, { Color: "#AA000000", CompositionMode: "Source", TargetRect: {x:30, y:y+25 ,w:1220,h:100}})
+        o.canvas.SetLayer(998, { Color: "#AA000000", CompositionMode: "Source", TargetRect: {x:30, y:y+30 ,w:1220,h:100}})
         o.canvas.SetLayer(1000, { Color: "#ffffff", CompositionMode: "Source", TargetRect: {x:40, y:y+50 ,w:1200,h:3}})
         o.canvas.SetLayer(1001, { Color: "#ffffff", CompositionMode: "Source", TargetRect: {x:42+o.VIDEO_OBJ.PLAYHEAD_X, y:y+44 ,w:3,h:15}})
         
@@ -156,7 +158,7 @@ function showInfo(o)
                 TextAttrs:{Font:o.family_16,
                     HAlign:"Left", VAlign:"Top",
                     Direction:"LeftToRight"}
-                    TargetRect: {x:100, y:y+35+40, w:30, h:20}
+                    TargetRect: {x:112, y:y+35+40, w:30, h:20}
              })
         info.push({
                 Text: o.EPG_OBJ.CURRENT_CHANNEL.chName  + ": " + o.EPG_OBJ.CURRENT_CHANNEL.chPlayList[o.EPG_OBJ.LAST_CHANNEL_PRG_INDEX].videoTitle,
